@@ -35,7 +35,7 @@ mvn test
 mvn javadoc:javadoc
 ```
 
-El HTML queda en `target/site/apidocs/index.html`.
+El HTML queda en `docs/javadoc/`.
 
 ## Controles
 
