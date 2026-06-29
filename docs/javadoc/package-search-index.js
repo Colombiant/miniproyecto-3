@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"edu.univalle.cincuentazo"},{"l":"edu.univalle.cincuentazo.controller"},{"l":"edu.univalle.cincuentazo.exception"},{"l":"edu.univalle.cincuentazo.model"},{"l":"edu.univalle.cincuentazo.view"}];updateSearchResults();
