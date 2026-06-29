@@ -346,7 +346,9 @@ public class GameController implements Initializable {
         VBox row = new VBox(8);
         row.getStyleClass().add("opponent-row");
 
-        Label nameLabel = new Label(player.getName() + (player.isActive() ? " activa" : " eliminada"));
+        Label nameLabel = new Label(player.getName()
+                + (player.isActive() ? " activa" : " eliminada")
+                + " | Jugadas: " + model.getPlayedCardCount(player));
         nameLabel.getStyleClass().add(player.isActive() ? "player-active" : "player-eliminated");
 
         HBox cardsBox = new HBox(8);

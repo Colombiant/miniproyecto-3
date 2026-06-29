@@ -4,6 +4,7 @@ import edu.univalle.cincuentazo.exception.GameException;
 import edu.univalle.cincuentazo.exception.InvalidMoveException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +26,10 @@ class GameModelTest {
         assertTrue(model.getTopTableCard().isPresent());
         assertEquals(39, model.getDeckSize());
         assertFalse(model.isAwaitingDraw());
+
+        Map<Player, Integer> playedCardCounts = model.getPlayedCardCounts();
+        assertEquals(3, playedCardCounts.size());
+        assertTrue(playedCardCounts.values().stream().allMatch(count -> count == 0));
     }
 
     @Test
@@ -40,11 +45,13 @@ class GameModelTest {
         GameModel model = new GameModel(new Random(7));
         model.startNewGame(1);
         Player human = model.getCurrentPlayer();
+        int playableIndex = findPlayableCardIndex(human, model.getTableSum());
 
-        Card playedCard = model.playCard(0);
+        Card playedCard = model.playCard(playableIndex);
 
         assertNotNull(playedCard);
         assertEquals(3, human.getHand().size());
+        assertEquals(1, model.getPlayedCardCount(human));
         assertTrue(model.isAwaitingDraw());
 
         model.drawForCurrentPlayer();
@@ -52,5 +59,14 @@ class GameModelTest {
         assertEquals(4, human.getHand().size());
         assertFalse(model.isAwaitingDraw());
         assertFalse(model.getCurrentPlayer().isHuman());
+    }
+
+    private int findPlayableCardIndex(Player player, int tableSum) {
+        for (int index = 0; index < player.getHand().size(); index++) {
+            if (player.getHand().get(index).canBePlayed(tableSum, GameModel.TABLE_LIMIT)) {
+                return index;
+            }
+        }
+        throw new AssertionError("Expected at least one playable card.");
     }
 }

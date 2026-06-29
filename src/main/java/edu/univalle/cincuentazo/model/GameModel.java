@@ -8,7 +8,9 @@ import edu.univalle.cincuentazo.exception.NoPlayableCardException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -26,6 +28,7 @@ public class GameModel {
     private final List<Player> players;
     private final List<Card> tablePile;
     private final List<GameEventListener> listeners;
+    private final Map<Player, Integer> playedCardCounts;
     private Deck deck;
     private int tableSum;
     private int currentPlayerIndex;
@@ -51,6 +54,7 @@ public class GameModel {
         this.players = new ArrayList<>();
         this.tablePile = new ArrayList<>();
         this.listeners = new ArrayList<>();
+        this.playedCardCounts = new LinkedHashMap<>();
         this.deck = new Deck();
     }
 
@@ -67,6 +71,7 @@ public class GameModel {
 
         players.clear();
         tablePile.clear();
+        playedCardCounts.clear();
         deck = Deck.standardShuffled(random);
         tableSum = 0;
         currentPlayerIndex = 0;
@@ -78,6 +83,9 @@ public class GameModel {
         players.add(new HumanPlayer("Jugador humano"));
         for (int index = 1; index <= machinePlayerCount; index++) {
             players.add(new MachinePlayer("Maquina " + index));
+        }
+        for (Player player : players) {
+            playedCardCounts.put(player, 0);
         }
 
         for (int round = 0; round < HAND_SIZE; round++) {
@@ -146,6 +154,7 @@ public class GameModel {
         Card playedCard = player.removeCard(handIndex);
         tablePile.add(playedCard);
         tableSum += value;
+        playedCardCounts.merge(player, 1, Integer::sum);
         awaitingDraw = true;
         notifyMessage(player.getName() + " juega " + playedCard.getShortName() + " (" + signedValue(value) + ").");
         notifyStateChanged();
@@ -251,6 +260,25 @@ public class GameModel {
      */
     public List<Card> getTablePile() {
         return List.copyOf(tablePile);
+    }
+
+    /**
+     * Gets how many cards each player has played during the current game.
+     *
+     * @return read-only player statistics map
+     */
+    public Map<Player, Integer> getPlayedCardCounts() {
+        return Collections.unmodifiableMap(new LinkedHashMap<>(playedCardCounts));
+    }
+
+    /**
+     * Gets the amount of cards played by one player.
+     *
+     * @param player player to inspect
+     * @return played card count
+     */
+    public int getPlayedCardCount(Player player) {
+        return playedCardCounts.getOrDefault(player, 0);
     }
 
     /**

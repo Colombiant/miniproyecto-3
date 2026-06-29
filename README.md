@@ -1,6 +1,6 @@
 # Cincuentazo
 
-Proyecto JavaFX para el juego **Cincuentazo**, desarrollado con arquitectura MVC, FXML, eventos de mouse y teclado, hilos para los turnos de la maquina, excepciones propias, Javadoc y pruebas unitarias con JUnit 5.
+Proyecto JavaFX para el juego **Cincuentazo**, desarrollado con arquitectura MVC, FXML, eventos de mouse y teclado, hilos para los turnos de la maquina, excepciones propias, Javadoc y pruebas unitarias con JUnit 6.
 
 ## Requisitos
 
@@ -54,6 +54,7 @@ El HTML queda en `target/site/apidocs/index.html`.
 - Interfaces: `Player`, `GameEventListener`, `CardSelectionListener`.
 - Clases internas: manejadores dentro de `GameController`.
 - Adaptadores: `GameEventAdapter` y `KeyboardShortcutAdapter`.
+- Estructuras de datos: `List`/`ArrayList`, `Deque`/`ArrayDeque` y `Map`/`LinkedHashMap`.
 - Hilos: temporizador de jugada de maquina y temporizador de toma de carta.
 - Excepciones propias marcadas y no marcadas.
-- Tres clases de pruebas unitarias con JUnit 5.
+- Tres clases de pruebas unitarias con JUnit 6.
